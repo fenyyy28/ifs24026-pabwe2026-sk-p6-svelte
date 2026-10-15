@@ -48,15 +48,15 @@
 
     <label>
       Email
-      <input type="email" bind:value={$email} placeholder="nama@email.com" />
+      <input id="login-email-input" type="email" bind:value={$email} placeholder="nama@email.com" />
     </label>
 
     <label>
       Password
-      <input type="password" bind:value={$password} placeholder="Password" />
+      <input id="login-password-input" type="password" bind:value={$password} placeholder="Password" />
     </label>
 
-    <button type="submit" disabled={loading}>
+    <button id="login-submit-button" type="submit" disabled={loading}>
       {loading ? 'Memproses...' : 'Masuk'}
     </button>
 
