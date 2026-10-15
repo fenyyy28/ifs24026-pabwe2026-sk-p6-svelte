@@ -143,11 +143,11 @@
         {#if profileAlert.text}<p class={'alert ' + profileAlert.type}>{profileAlert.text}</p>{/if}
         <label>
           Nama
-          <input type="text" bind:value={name} />
+          <input type="text" autocomplete="name" bind:value={name} />
         </label>
         <label>
           Email
-          <input type="email" bind:value={email} />
+          <input type="email" autocomplete="email" bind:value={email} />
         </label>
         <button type="submit" class="btn" disabled={savingProfile}>
           {savingProfile ? 'Menyimpan...' : 'Simpan Perubahan'}
@@ -161,15 +161,15 @@
         {#if passwordAlert.text}<p class={'alert ' + passwordAlert.type}>{passwordAlert.text}</p>{/if}
         <label>
           Kata sandi saat ini
-          <input type="password" bind:value={currentPassword} />
+          <input type="password" autocomplete="current-password" bind:value={currentPassword} />
         </label>
         <label>
           Kata sandi baru
-          <input type="password" bind:value={newPassword} placeholder="Minimal 6 karakter" />
+          <input type="password" autocomplete="new-password" bind:value={newPassword} placeholder="Minimal 6 karakter" />
         </label>
         <label>
           Konfirmasi kata sandi baru
-          <input type="password" bind:value={confirmation} />
+          <input type="password" autocomplete="new-password" bind:value={confirmation} />
         </label>
         <button type="submit" class="btn" disabled={savingPassword}>
           {savingPassword ? 'Menyimpan...' : 'Ubah Kata Sandi'}

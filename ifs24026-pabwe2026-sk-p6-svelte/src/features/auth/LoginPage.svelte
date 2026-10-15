@@ -48,12 +48,12 @@
 
     <label>
       Email
-      <input id="login-email-input" type="email" bind:value={$email} placeholder="nama@email.com" />
+      <input id="login-email-input" type="email" autocomplete="email" bind:value={$email} placeholder="nama@email.com" />
     </label>
 
     <label>
       Password
-      <input id="login-password-input" type="password" bind:value={$password} placeholder="Password" />
+      <input id="login-password-input" type="password" autocomplete="current-password" bind:value={$password} placeholder="Password" />
     </label>
 
     <button id="login-submit-button" type="submit" disabled={loading}>

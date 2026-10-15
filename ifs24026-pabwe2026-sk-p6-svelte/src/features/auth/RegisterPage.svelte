@@ -59,17 +59,17 @@
 
     <label>
       Nama
-      <input type="text" bind:value={$name} placeholder="Nama lengkap" />
+      <input type="text" autocomplete="name" bind:value={$name} placeholder="Nama lengkap" />
     </label>
 
     <label>
       Email
-      <input type="email" bind:value={$email} placeholder="nama@email.com" />
+      <input type="email" autocomplete="email" bind:value={$email} placeholder="nama@email.com" />
     </label>
 
     <label>
       Password
-      <input type="password" bind:value={$password} placeholder="Minimal 6 karakter" />
+      <input type="password" autocomplete="new-password" bind:value={$password} placeholder="Minimal 6 karakter" />
     </label>
 
     <button type="submit" disabled={loading}>
