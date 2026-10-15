@@ -130,7 +130,7 @@
       <div class="photo-row">
         <img src={resolveAssetUrl($profile?.photo)} alt="Foto profil" />
         <div>
-          <input type="file" accept="image/*" onchange={handlePhoto} disabled={uploading} />
+          <input type="file" accept="image/*" aria-label="Unggah foto profil" onchange={handlePhoto} disabled={uploading} />
           {#if uploading}<p class="muted">Mengunggah...</p>{/if}
         </div>
       </div>

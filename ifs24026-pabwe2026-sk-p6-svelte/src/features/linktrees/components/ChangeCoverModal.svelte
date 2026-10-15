@@ -55,7 +55,7 @@
     {:else}
       <p class="muted">Belum ada sampul.</p>
     {/if}
-    <input type="file" accept="image/*" onchange={handleFile} />
+    <input type="file" accept="image/*" aria-label="Pilih berkas sampul" onchange={handleFile} />
     <div class="actions">
       <button type="button" class="btn secondary" onclick={onclose}>Batal</button>
       <button type="submit" class="btn" disabled={$mutations.cover}>
