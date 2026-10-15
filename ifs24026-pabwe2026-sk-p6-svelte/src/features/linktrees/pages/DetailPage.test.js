@@ -46,7 +46,7 @@ const treeDelete = () => within(document.querySelector('.owner-actions')).getByR
 
 const open = async (props = { linkTreeId: '5' }) => {
   const view = render(DetailPage, props)
-  await screen.findByRole('heading', { level: 1 })
+  await waitFor(() => expect(screen.queryByText('Memuat data...')).not.toBeInTheDocument())
   return view
 }
 

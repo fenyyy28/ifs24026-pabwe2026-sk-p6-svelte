@@ -68,8 +68,10 @@
   <a class="back" href="/" onclick={(e) => { e.preventDefault(); navigate('/') }}>← Semua Link Tree</a>
 
   {#if $detailLoading}
+    <h1>Detail Link Tree</h1>
     <p>Memuat data...</p>
   {:else if $detailError}
+    <h1>Detail Link Tree</h1>
     <p class="alert error">{$detailError}</p>
   {:else if current}
     {@const cover = resolveCoverUrl(current.cover)}

@@ -119,9 +119,9 @@
           </a>
           <div class="info">
             <span class={'badge ' + lt.type}>{typeLabel(lt.type)}</span>
-            <h3>
+            <h2>
               <a href={`/link-trees/${lt.id}`} onclick={(e) => open(e, lt.id)}>{lt.title}</a>
-            </h3>
+            </h2>
             <p class="muted clamp">{lt.description || 'Tanpa deskripsi'}</p>
             <div class="meta">
               <img class="avatar" src={resolveAssetUrl(lt.author?.photo)} alt="" />
@@ -159,9 +159,9 @@
   .cover img, .cover-empty { width: 100%; height: 130px; object-fit: cover; display: block; background: #e2e8f0; }
   .cover-empty { display: flex; align-items: center; justify-content: center; }
   .info { padding: 0.9rem; display: flex; flex-direction: column; gap: 0.4rem; }
-  h3 { margin: 0; font-size: 1.05rem; }
-  h3 a { color: inherit; text-decoration: none; }
-  h3 a:hover { color: #4f46e5; }
+  h2 { margin: 0; font-size: 1.05rem; }
+  h2 a { color: inherit; text-decoration: none; }
+  h2 a:hover { color: #4f46e5; }
   .clamp { margin: 0; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .meta { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: #64748b; }
   .avatar { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; background: #e2e8f0; }
