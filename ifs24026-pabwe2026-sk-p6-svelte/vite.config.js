@@ -60,4 +60,4 @@ export default defineConfig(({ mode }) => {
       },
     },
   }
-})cl
+})
