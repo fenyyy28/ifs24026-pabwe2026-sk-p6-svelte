@@ -32,8 +32,16 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const port = Number(env.APP_PORT) || 3004
 
+  // Di Vercel, arahkan API lewat proxy satu-origin (/api -> vercel.json) agar tidak ada
+  // request lintas-origin (CORS). Lokal dan test tetap memakai VITE_DELCOM_BASEURL dari .env.
+  const vercelHost = process.env.VERCEL ? process.env.VERCEL_PROJECT_PRODUCTION_URL : ''
+  const define = vercelHost
+    ? { 'import.meta.env.VITE_DELCOM_BASEURL': JSON.stringify(`https://${vercelHost}/api/v1`) }
+    : {}
+
   return {
     plugins: [svelte(), svelteTesting(), inlineCss()],
+    define,
     server: { port, strictPort: true },
     preview: { port, strictPort: true },
     test: {
@@ -52,4 +60,4 @@ export default defineConfig(({ mode }) => {
       },
     },
   }
-})
+})cl
