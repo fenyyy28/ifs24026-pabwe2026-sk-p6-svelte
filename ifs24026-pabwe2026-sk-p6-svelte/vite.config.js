@@ -52,12 +52,12 @@ export default defineConfig(({ mode }) => {
       env: { VITE_DELCOM_BASEURL: 'https://open-api.delcom.org/api/v1' },
       clearMocks: true,
       coverage: {
-        provider: 'v8',
-        include: ['src/**/*.{js,svelte}'],
-        exclude: ['src/**/*.test.js', 'src/main.js'],
-        reporter: ['text', 'html'],
-        thresholds: { statements: 100, branches: 100, functions: 100, lines: 100 },
-      },
+  provider: 'v8',
+  include: ['src/**/*.{js,svelte}'],
+  exclude: ['src/**/*.test.js', 'src/main.js'],
+  reporter: ['text', 'html', 'lcov'],
+  thresholds: { statements: 100, branches: 100, functions: 100, lines: 100 },
+},
     },
   }
 })

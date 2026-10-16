@@ -9,6 +9,12 @@ pipeline {
         skipStagesAfterUnstable()
     }
 
+    environment {
+        // Folder proyek kalau repo punya folder bersarang dengan nama yang sama.
+        // Kalau folder ini tidak ada, otomatis dipakai root repo ('.').
+        NESTED_DIR = 'ifs24026-pabwe2026-sk-p6-svelte'
+    }
+
     stages {
 
         // ============================================================
@@ -24,6 +30,22 @@ pipeline {
 
             steps {
                 checkout scm
+
+                script {
+                    // Deteksi lokasi package.json proyek
+                    if (fileExists("${env.NESTED_DIR}/package.json")) {
+                        env.APP_DIR = env.NESTED_DIR
+                    } else {
+                        env.APP_DIR = '.'
+                    }
+
+                    echo "APP_DIR = ${env.APP_DIR}"
+                }
+
+                sh '''
+                    echo "=== Isi APP_DIR ($APP_DIR) ==="
+                    ls -la "$APP_DIR"
+                '''
             }
         }
 
@@ -39,15 +61,17 @@ pipeline {
             }
 
             steps {
-                sh '''
-                    set -e
+                dir(env.APP_DIR) {
+                    sh '''
+                        set -e
 
-                    echo "=== Installing Dependencies ==="
+                        echo "=== Installing Dependencies ==="
 
-                    bun install
+                        bun install
 
-                    echo "=== Dependencies Installed ==="
-                '''
+                        echo "=== Dependencies Installed ==="
+                    '''
+                }
             }
         }
 
@@ -62,16 +86,23 @@ pipeline {
                 }
             }
 
+            environment {
+                // Cadangan agar resolveAssetUrl tidak error "Invalid URL" di CI
+                VITE_DELCOM_BASEURL = 'https://example.com/api'
+            }
+
             steps {
-                sh '''
-                    set -e
+                dir(env.APP_DIR) {
+                    sh '''
+                        set -e
 
-                    echo "=== Running Tests with Coverage ==="
+                        echo "=== Running Tests with Coverage ==="
 
-                    npx vitest run --coverage
+                        npx vitest run --coverage
 
-                    echo "=== Tests Passed ==="
-                '''
+                        echo "=== Tests Passed ==="
+                    '''
+                }
             }
         }
 
@@ -96,7 +127,9 @@ pipeline {
                 sh '''
                     set -e
 
-                    mkdir -p .trivy-cache || true
+                    ROOT="$(pwd)"
+
+                    mkdir -p "$ROOT/.trivy-cache" || true
 
                     echo "======================================"
                     echo "        TRIVY SECURITY SCAN"
@@ -107,17 +140,19 @@ pipeline {
 
                     echo "=== Trivy Scan ==="
 
+                    cd "$APP_DIR"
+
                     trivy fs \
-                        --cache-dir .trivy-cache \
+                        --cache-dir "$ROOT/.trivy-cache" \
                         --scanners vuln \
                         --severity HIGH,CRITICAL \
                         --format sarif \
-                        --output trivy-results.sarif \
+                        --output "$ROOT/trivy-results.sarif" \
                         --exit-code 1 \
                         .
 
                     echo "=== Trivy Result ==="
-                    ls -lh trivy-results.sarif
+                    ls -lh "$ROOT/trivy-results.sarif"
                 '''
             }
 
@@ -154,16 +189,18 @@ pipeline {
             }
 
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh '''
-                        set -e
+                dir(env.APP_DIR) {
+                    withSonarQubeEnv('SonarQube') {
+                        sh '''
+                            set -e
 
-                        echo "=== SonarQube Analysis ==="
+                            echo "=== SonarQube Analysis ==="
 
-                        sonar-scanner
+                            sonar-scanner
 
-                        echo "=== SonarQube Analysis Completed ==="
-                    '''
+                            echo "=== SonarQube Analysis Completed ==="
+                        '''
+                    }
                 }
             }
         }
@@ -201,9 +238,13 @@ pipeline {
 
                     apk add --no-cache zip unzip
 
-                    rm -f latest-app.zip
+                    ROOT="$(pwd)"
 
-                    zip -r latest-app.zip . \
+                    rm -f "$ROOT/latest-app.zip"
+
+                    cd "$APP_DIR"
+
+                    zip -r "$ROOT/latest-app.zip" . \
                         -x "node_modules/*" \
                         -x ".git/*" \
                         -x ".env" \
@@ -215,6 +256,8 @@ pipeline {
                         -x "latest-app.zip" \
                         -x "trivy-results.sarif" \
                         -x ".docs/*"
+
+                    cd "$ROOT"
 
                     echo "=== Application Package Created ==="
 
