@@ -1,17 +1,6 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "vite build",
-  "outputDirectory": "dist",
-  "build": {
-    "env": {
-      "VITE_DELCOM_BASEURL": "https://open-api.delcom.org/api/v1"
-    }
-  },
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
-  "headers": [
-    {
-      "source": "/assets/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
-    }
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://open-api.delcom.org/api/:path*" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
